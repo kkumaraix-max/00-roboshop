@@ -3,13 +3,10 @@
 component=$1
 environment=$2
 dnf install ansible -y
-#ansible-pull -U https://github.com/daws-86s/ansible-roboshop-roles-tf.git -e component=$component main.yaml
-# git clone ansible-playbook
-# cd ansible-playbook
-# ansible-playbook -i inventory main.yaml
 
 #REPO_URL=https://github.com/daws-86s/ansible-roboshop-roles-tf.git
 REPO_URL=https://github.com/kkumaraix-max/ansible-roboshop-roles-tf.git
+
 REPO_DIR=/opt/roboshop/ansible
 ANSIBLE_DIR=ansible-roboshop-roles-tf
 
@@ -29,5 +26,5 @@ else
     git clone $REPO_URL
     cd $ANSIBLE_DIR
 fi
-
+echo "environment is: $2"
 ansible-playbook -e component=$component -e env=$environment main.yaml

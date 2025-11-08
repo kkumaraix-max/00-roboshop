@@ -1,17 +1,3 @@
-# resource "aws_instance" "terraform" {
-#     count = 4
-#     ami = "ami-09c813fb71547fc4f"
-#     instance_type = "t3.micro"
-#     vpc_security_group_ids = [lookup(local.sg_map, var.instances[count.index])]
-#     subnet_id = local.database_subnet_id
-#     tags = merge (
-#         local.common_tags,
-#         {
-#             Name = "${local.common_name_suffix}-${var.instances[count.index]}" # roboshop-dev-mongodb
-#         }
-#     )
-# }
-
 resource "aws_instance" "mongodb" {
     ami = local.ami_id
     instance_type = "t3.micro"
@@ -26,7 +12,7 @@ resource "aws_instance" "mongodb" {
     )
 }
 
-resource "terraform_data" "mongodb" {
+resource "terraform_data" "mongodb" {  #this block is NULL_RESOURCE,rename as terrafom_data,trigger menas it will trigger when it is changed
   triggers_replace = [
     aws_instance.mongodb.id
   ]
@@ -178,4 +164,40 @@ resource "terraform_data" "mysql" {
         "sudo sh /tmp/bootstrap.sh mysql dev"
     ]
   }
+}
+
+resource "aws_route53_record" "mongodb" {
+  zone_id = var.zone_id
+  name    = "mongodb-${var.environment}.${var.domain_name}" # mongodb-dev.daws86s.fun
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.mongodb.private_ip]
+  allow_overwrite = true
+}
+
+resource "aws_route53_record" "redis" {
+  zone_id = var.zone_id
+  name    = "redis-${var.environment}.${var.domain_name}" # redis-dev.daws86s.fun
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.redis.private_ip]
+  allow_overwrite = true
+}
+
+resource "aws_route53_record" "mysql" {
+  zone_id = var.zone_id
+  name    = "mysql-${var.environment}.${var.domain_name}" # mysql-dev.daws86s.fun
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.mysql.private_ip]
+  allow_overwrite = true
+}
+
+resource "aws_route53_record" "rabbitmq" {
+  zone_id = var.zone_id
+  name    = "rabbitmq-${var.environment}.${var.domain_name}" # rabbitmq-dev.daws86s.fun
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.rabbitmq.private_ip]
+  allow_overwrite = true
 }
