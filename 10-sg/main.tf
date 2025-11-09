@@ -16,7 +16,7 @@ resource "aws_security_group" "roboshop" {
     local.common_tags,
     {
       Name        = "${local.common_name_suffix}-${var.sg_name[count.index]}"
-      Project     = var.project
+      Project     = var.project_name
       Environment = var.environment
     }
   )
