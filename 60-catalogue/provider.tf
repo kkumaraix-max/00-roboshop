@@ -8,7 +8,7 @@ terraform {
 
   backend "s3" {
     bucket = "daws2025"
-    key    = "backend-alb-test"
+    key    = "backend-catalogue-test"
     region = "us-east-1"
     use_lockfile = true
     encrypt = true
