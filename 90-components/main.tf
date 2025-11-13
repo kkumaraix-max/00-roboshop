@@ -11,3 +11,10 @@ module "components" {
     component = each.key
     rule_priority = each.value.rule_priority
 }
+
+
+# variable "components" {
+#     default = {
+#         catalogue = {
+#             rule_priority = 10
+#         }
