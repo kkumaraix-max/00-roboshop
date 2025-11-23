@@ -134,7 +134,7 @@ resource "aws_instance" "mysql" {
         }
     )
 }
-
+#Creates IAM instance profile → EC2 can read SSM
 resource "aws_iam_instance_profile" "mysql" {
   name = "mysql"
   role = "EC2SSMParameterRead"
